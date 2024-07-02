@@ -42,15 +42,28 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
         }
 
-        .controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .grid div.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .grid div .front, .grid div .back {
+            position: absolute;
             width: 100%;
-            max-width: 400px;
-            margin-bottom: 20px;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+        }
+
+        .grid div .back {
+            transform: rotateY(180deg);
         }
 
         .button {
@@ -60,18 +73,10 @@
             color: white;
             border-radius: 5px;
             cursor: pointer;
-        }
-
-        .controls span, .controls input {
-            margin: 0 10px;
-        }
-
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             width: 100%;
             max-width: 400px;
+            font-size: 1.5rem;
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -79,42 +84,118 @@
     <div class="container">
         <div class="grid">
             <!-- Generate grid items -->
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✖</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✖</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✖</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✖</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✖</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✖</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✖</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✖</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✖</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✖</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✖</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✖</div>
+            </div>
+            <div>
+                <div class="front"></div>
+                <div class="back">✔</div>
+            </div>
         </div>
-        <div class="controls">
-            <span>Макс. выигрыш: 2,196.5 $</span>
-            <span>3 ловушек</span>
-        </div>
-        <div class="footer">
-            <button class="button">-</button>
-            <input type="text" value="1 $" readonly>
-            <button class="button">Играть</button>
-            <button class="button">+</button>
-        </div>
+        <button class="button" onclick="flipAll()">Узнать</button>
     </div>
+
+    <script>
+        function flipAll() {
+            const cells = document.querySelectorAll('.grid div');
+            cells.forEach(cell => {
+                cell.classList.toggle('flipped');
+            });
+        }
+    </script>
 </body>
 </html>
+
