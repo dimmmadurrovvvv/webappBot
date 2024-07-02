@@ -3,36 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram WebApp Game</title>
+    <title>WebApp Game</title>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #0d0d21;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            max-width: 90%;
+            text-align: center;
+        }
+
         .grid {
             display: grid;
-            grid-template-columns: repeat(6, 50px);
-            grid-template-rows: repeat(6, 50px);
-            gap: 5px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
         }
-        .cell {
-            width: 50px;
-            height: 50px;
-            background-color: lightgray;
+
+        .grid div {
+            width: 60px;
+            height: 60px;
+            background-color: #1a8fa3;
+            border-radius: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
         }
-        .dot {
-            width: 10px;
-            height: 10px;
-            background-color: black;
-            border-radius: 50%;
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .controls span, .controls input {
+            margin: 0 10px;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
         }
     </style>
 </head>
 <body>
-    <div class="grid" id="grid">
-        <!-- Cells will be added by JavaScript -->
+    <div class="container">
+        <div class="grid">
+            <!-- Generate grid items -->
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="controls">
+            <span>Макс. выигрыш: 2,196.5 $</span>
+            <span>3 ловушек</span>
+        </div>
+        <div class="footer">
+            <button class="button">-</button>
+            <input type="text" value="1 $" readonly>
+            <button class="button">Играть</button>
+            <button class="button">+</button>
+        </div>
     </div>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="script.js"></script>
 </body>
 </html>
