@@ -153,7 +153,7 @@
     <div class="welcome-container" id="welcome-container">
         <img src="./raixan.png" alt="Raixan">
         <h1>Добро пожаловать в Райхан-игру!</h1>
-        <p>Мы даем вам 1 подсказку в час. Не упусти свой шанс!</p>
+        <p>Мы даем вам 1 подсказку в минуту. Не упусти свой шанс!</p>
         <button id="continue-button">Продолжить</button>
     </div>
     <div class="game-container" id="game-container">
@@ -245,7 +245,7 @@
             button.addEventListener('click', () => {
                 button.disabled = true;
                 randomizeGrid();
-                startTimer(180, button); // 180 секунд = 3 минуты
+                startTimer(60, button); // 180 секунд = 3 минуты
             });
 
             createGrid();
