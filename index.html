@@ -36,20 +36,39 @@
             text-align: center;
             max-width: 90%;
             max-height: 90%;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+            opacity: 0;
         }
 
         .welcome-container {
             z-index: 10;
+            animation: fadeIn 1s forwards;
         }
 
         .game-container {
             display: none;
         }
 
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes parallax {
+            0% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(10px);
+            }
+        }
+
         .welcome-container img {
-            max-width: 50%;
+            max-width: 60%;
             height: auto;
             margin-bottom: 20px;
+            animation: parallax 2s infinite alternate ease-in-out;
         }
 
         .welcome-container h1 {
@@ -210,4 +229,5 @@
     </script>
 </body>
 </html>
+
 
