@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebApp Game</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Loos+Wide&family=Poppins:wght@400;600&display=swap');
+        
         body {
             display: flex;
             justify-content: center;
@@ -13,12 +15,54 @@
             background-color: #070B1F;
             margin: 0;
             font-family: Arial, sans-serif;
+            overflow: hidden;
         }
 
-        .game-container {
+        .welcome-container, .game-container {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .welcome-container {
+            z-index: 10;
+        }
+
+        .game-container {
+            display: none;
+        }
+
+        .welcome-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .welcome-container h1 {
+            font-family: 'Loos Wide', sans-serif;
+            font-size: 2em;
+            color: white;
+            text-shadow: 2px 2px 2px black;
+            margin: 20px 0 10px 0;
+        }
+
+        .welcome-container p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+            margin-bottom: 20px;
         }
 
         .grid {
@@ -68,6 +112,7 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            width: 100%;
         }
 
         button:hover {
@@ -76,7 +121,13 @@
     </style>
 </head>
 <body>
-    <div class="game-container">
+    <div class="welcome-container" id="welcome-container">
+        <img src="./raixan.png" alt="Raixan">
+        <h1>Добро пожаловать в Райхан-игру!</h1>
+        <p>Мы даем вам 1 подсказку в час. Не упусти свой шанс!</p>
+        <button id="continue-button">Продолжить</button>
+    </div>
+    <div class="game-container" id="game-container">
         <div class="grid" id="grid">
             <!-- Квадраты будут добавлены здесь с помощью JavaScript -->
         </div>
@@ -84,8 +135,16 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            const welcomeContainer = document.getElementById('welcome-container');
+            const gameContainer = document.getElementById('game-container');
+            const continueButton = document.getElementById('continue-button');
             const grid = document.getElementById('grid');
             const button = document.getElementById('uznat-button');
+
+            continueButton.addEventListener('click', () => {
+                welcomeContainer.style.display = 'none';
+                gameContainer.style.display = 'flex';
+            });
 
             function createGrid() {
                 for (let i = 0; i < 25; i++) {
