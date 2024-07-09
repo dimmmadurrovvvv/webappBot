@@ -287,19 +287,23 @@
 
             function startTimer(duration, display) {
                 let timer = duration, minutes, seconds;
+                const endTime = Date.now() + duration * 1000;
+
                 const interval = setInterval(() => {
-                    minutes = parseInt(timer / 60, 10);
-                    seconds = parseInt(timer % 60, 10);
-
-                    minutes = minutes < 10 ? "0" + minutes : minutes;
-                    seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                    display.textContent = minutes + ":" + seconds;
-
-                    if (--timer < 0) {
+                    const remainingTime = endTime - Date.now();
+                    if (remainingTime < 0) {
                         clearInterval(interval);
                         display.textContent = 'Узнать';
                         button.disabled = false;
+                        localStorage.removeItem('endTime');
+                    } else {
+                        minutes = parseInt(remainingTime / 1000 / 60, 10);
+                        seconds = parseInt(remainingTime / 1000 % 60, 10);
+
+                        minutes = minutes < 10 ? "0" + minutes : minutes;
+                        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                        display.textContent = minutes + ":" + seconds;
                     }
                 }, 1000);
             }
@@ -307,14 +311,28 @@
             button.addEventListener('click', () => {
                 button.disabled = true;
                 randomizeGrid();
-                startTimer(60, button); // 180 секунд = 3 минуты
+                const duration = 60; // 60 секунд
+                const endTime = Date.now() + duration * 1000;
+                localStorage.setItem('endTime', endTime);
+                startTimer(duration, button);
             });
+
+            // Проверка таймера при загрузке страницы
+            const savedEndTime = localStorage.getItem('endTime');
+            if (savedEndTime) {
+                const remainingTime = (savedEndTime - Date.now()) / 1000;
+                if (remainingTime > 0) {
+                    button.disabled = true;
+                    startTimer(remainingTime, button);
+                }
+            }
 
             createGrid();
         });
     </script>
 </body>
 </html>
+
 
 
 
