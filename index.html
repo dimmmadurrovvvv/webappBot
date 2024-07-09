@@ -98,17 +98,17 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             grid-template-rows: repeat(5, 1fr);
-            gap: 12px; /* увеличен промежуток между элементами */
+            gap: 12px;
             margin-bottom: 20px;
-            padding: 12px; /* увеличено значение padding */
+            padding: 12px;
             background-color: #0D1028;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 20px;
         }
 
         .grid div {
-            width: 60px; /* увеличен размер квадратов */
-            height: 60px; /* увеличен размер квадратов */
+            width: 60px;
+            height: 60px;
             background-image: url('./Rectangle.svg');
             background-size: cover;
             display: flex;
@@ -133,8 +133,8 @@
         }
 
         button {
-            padding: 12px 24px; /* увеличены размеры кнопки */
-            font-size: 18px; /* увеличен размер шрифта */
+            padding: 12px 24px;
+            font-size: 18px;
             color: white;
             background-color: #007BFF;
             border: none;
@@ -147,6 +147,29 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        .counter-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .counter-container span {
+            margin: 0 10px;
+            font-size: 18px;
+        }
+
+        .counter-container button {
+            padding: 0 10px;
+            font-size: 18px;
+            background-color: #444;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -157,6 +180,11 @@
         <button id="continue-button">Продолжить</button>
     </div>
     <div class="game-container" id="game-container">
+        <div class="counter-container">
+            <button id="decrease-button">-</button>
+            <span id="trap-count">1</span> ловушек
+            <button id="increase-button">+</button>
+        </div>
         <div class="grid" id="grid">
             <!-- Квадраты будут добавлены здесь с помощью JavaScript -->
         </div>
@@ -169,10 +197,28 @@
             const continueButton = document.getElementById('continue-button');
             const grid = document.getElementById('grid');
             const button = document.getElementById('uznat-button');
+            const trapCountElement = document.getElementById('trap-count');
+            const decreaseButton = document.getElementById('decrease-button');
+            const increaseButton = document.getElementById('increase-button');
+            let trapCount = 1;
 
             continueButton.addEventListener('click', () => {
                 welcomeContainer.style.display = 'none';
                 gameContainer.classList.add('show');
+            });
+
+            decreaseButton.addEventListener('click', () => {
+                if (trapCount > 1) {
+                    trapCount--;
+                    trapCountElement.textContent = trapCount;
+                }
+            });
+
+            increaseButton.addEventListener('click', () => {
+                if (trapCount < 7) {
+                    trapCount++;
+                    trapCountElement.textContent = trapCount;
+                }
             });
 
             function createGrid() {
@@ -187,7 +233,7 @@
                 const cells = document.querySelectorAll('.cell');
                 const randomIndices = [];
 
-                while (randomIndices.length < 3) {
+                while (randomIndices.length < trapCount) {
                     const index = Math.floor(Math.random() * 25);
                     if (!randomIndices.includes(index)) {
                         randomIndices.push(index);
@@ -253,6 +299,7 @@
     </script>
 </body>
 </html>
+
 
 
 
