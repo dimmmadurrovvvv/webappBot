@@ -3,188 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Бот-резюме</title>
+    <title>WebApp Game</title>
     <style>
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #000;
-    color: #fff;
-    overflow-x: hidden; /* Запрещаем горизонтальный скролл */
-}
+        @import url('https://fonts.googleapis.com/css2?family=Loos+Wide&family=Poppins:wght@400;600&display=swap');
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #070B1F;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
 
-.container {
-    padding: 20px;
-    max-width: 400px;
-    margin: 0 auto;
-    overflow: hidden; /* Запрещаем вертикальный скролл */
-}
+        .welcome-container, .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            max-width: 90%;
+            max-height: 90%;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
 
-.lines {
-    width: 100%;
-    max-height: 100px; /* Ограничиваем максимальную высоту */
-    margin-bottom: 20px;
-    object-fit: cover; /* Сохраняем пропорции изображения */
-}
+        .welcome-container {
+            z-index: 10;
+            animation: fadeIn 1s forwards;
+        }
 
-.greeting {
-    text-align: center;
-    font-size: 24px;
-    margin: 0;
-}
+        .game-container {
+            display: flex;
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 1s ease;
+        }
 
-.welcome {
-    font-size: 20px;
-    text-align: center;
-    margin: 45px 0 20px;
-    font-family: 'Loose Wide', sans-serif;
-}
+        .game-container.show {
+            opacity: 1;
+            z-index: 10;
+        }
 
-.card-container {
-    display: flex;
-    justify-content: space-between;
-}
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
 
-.card {
-    border-radius: 24px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin: 0;
-}
+        @keyframes parallax {
+            0% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(10px);
+            }
+        }
 
-.large {
-    width: 183px;
-    height: 260px;
-    background-color: #C6F432;
-}
+        .welcome-container img {
+            max-width: 60%;
+            height: 34%;
+            margin-bottom: 20px;
+            animation: parallax 2s infinite alternate ease-in-out;
+        }
 
-.small-cards {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 260px;
-}
+        .welcome-container h1 {
+            font-family: 'Loos Wide', sans-serif;
+            font-size: 2em;
+            color: white;
+            text-shadow: 2px 2px 2px black;
+            margin: 20px 0 10px 0;
+        }
 
-.small {
-    width: 183px;
-    height: 123px; /* Высота маленьких карточек */
-    margin-bottom: 14px; /* Отступ между маленькими карточками */
-}
+        .welcome-container p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+            margin-bottom: 20px;
+        }
 
-.green {
-    background-color: #C6F432;
-}
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 12px;
+            background-color: #0D1028;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+        }
 
-.purple {
-    background-color: #C09FF8;
-}
+        .grid div {
+            width: 60px;
+            height: 60px;
+            background-image: url('./Rectangle.svg');
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
 
-.pink {
-    background-color: #FF99CC;
-}
+        .hidden {
+            transform: scale(0);
+            opacity: 0;
+        }
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-}
+        .cross {
+            background-image: url('./cross.svg') !important;
+            background-size: cover;
+        }
 
-.icon, .arrow {
-    width: 24px;
-    height: 24px;
-}
+        .star {
+            background-image: url('./star.svg') !important;
+            background-size: cover;
+        }
 
-.card-text {
-    font-family: 'Loose Wide', sans-serif;
-    line-height: 25px;
-}
+        button {
+            padding: 12px 24px;
+            font-size: 18px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
 
-.latest {
-    font-family: 'Loose Wide', sans-serif;
-    margin-bottom: 24px;
-}
+        button:hover {
+            background-color: #0056b3;
+        }
 
-.latest-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-}
+        .counter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 70%;
+            height: 60px;
+            background-color: #141B2E;
+            border-radius: 15px;
+            padding: 0 8px;
+            margin-bottom: 20px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
 
-.latest-card {
-    display: flex;
-    align-items: center;
-    background-color: #171717;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
-    padding: 16px;
-    margin-bottom: 24px;
-}
+        .counter {
+            display: flex;
+            align-items: center;
+            background-color: #090F1D;
+            border-radius: 15px;
+            padding: 8px;
+        }
 
-.circle {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #C6F432;
-    margin-right: 16px;
-}
+        .counter span {
+            margin: 0 10px;
+            font-size: 18px;
+        }
 
-.latest-text {
-    font-size: 16px;
-}
-
+        .counter img {
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="lines.svg" alt="Lines" class="lines">
-        <h1 class="greeting">Привет, <span id="username">{{user}}</span> 👋</h1>
-        <h2 class="welcome">Добро пожаловать!</h2>
-        <div class="card-container">
-            <div class="card large green">
-                <div class="card-header">
-                    <img src="info.svg" alt="Info" class="icon">
-                    <img src="arrow.svg" alt="Arrow" class="arrow">
-                </div>
-                <p class="card-text">Тут рассказываю о себе</p>
-            </div>
-            <div class="small-cards">
-                <div class="card small purple">
-                    <div class="card-header">
-                        <img src="info.svg" alt="Info" class="icon">
-                        <img src="arrow.svg" alt="Arrow" class="arrow">
-                    </div>
-                    <p class="card-text">Мои работы</p>
-                </div>
-                <div class="card small pink">
-                    <div class="card-header">
-                        <img src="info.svg" alt="Info" class="icon">
-                        <img src="arrow.svg" alt="Arrow" class="arrow">
-                    </div>
-                    <p class="card-text">Связь со мной</p>
-                </div>
-            </div>
-        </div>
-        <h2 class="latest">Последнее</h2>
-        <div class="latest-row">
-            <h3 class="latest-title">Последнее</h3>
-            <h3 class="all">Все</h3>
-        </div>
-        <div class="latest-card">
-            <div class="circle"></div>
-            <p class="latest-text">Система управлений камерами в офисах</p>
-        </div>
-        <div class="latest-card">
-            <div class="circle"></div>
-            <p class="latest-text">LMS-система</p>
-        </div>
-        <div class="latest-card">
-            <div class="circle"></div>
-            <p class="latest-text">Система распознавания лиц</p>
-        </div>
+    <div class="welcome-container" id="welcome-container">
+        <img src="./raixan.png" alt="Raixan">
+        <h1>Добро пожаловать в Liberty Empire!</h1>
+        <p> Вы успешно прошли проверку и подключили аккаунт к нашей системе</p>
+        <button id="continue-button">Продолжить</button>
     </div>
-    <script src="scripts.js"></script>
+    <div class="game-container" id="game-container">
+        <div class="grid" id="grid">
+            <!-- Квадраты будут добавлены здесь с помощью JavaScript -->
+        </div>
+        <div class="counter-container">
+            Кол-во ловушек
+            <div class="counter">
+                <img id="decrease-button" src="./left-arrow.svg" alt="Decrease">
+                <span id="trap-count">1</span>
+                <img id="increase-button" src="./right-arrow.svg" alt="Increase">
+            </div>
+        </div>
+        <button id="uznat-button">Узнать</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const welcomeContainer = document.getElementById('welcome-container');
+            const gameContainer = document.getElementById('game-container');
+            const continueButton = document.getElementById('continue-button');
+            const grid = document.getElementById('grid');
+            const button = document.getElementById('uznat-button');
+            const trapCountElement = document.getElementById('trap-count');
+            const decreaseButton = document.getElementById('decrease-button');
+            const increaseButton = document.getElementById('increase-button');
+            let trapCount = 1;
+            const trapOptions = [1, 3, 5, 7];
+
+            continueButton.addEventListener('click', () => {
+                welcomeContainer.style.display = 'none';
+                gameContainer.classList.add('show');
+            });
+
+            decreaseButton.addEventListener('click', () => {
+                const currentIndex = trapOptions.indexOf(trapCount);
+                if (currentIndex > 0) {
+                    trapCount = trapOptions[currentIndex - 1];
+                    trapCountElement.textContent = trapCount;
+                }
+            });
+
+            increaseButton.addEventListener('click', () => {
+                const currentIndex = trapOptions.indexOf(trapCount);
+                if (currentIndex < trapOptions.length - 1) {
+                    trapCount = trapOptions[currentIndex + 1];
+                    trapCountElement.textContent = trapCount;
+                }
+            });
+
+            function createGrid() {
+                for (let i = 0; i < 25; i++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    grid.appendChild(cell);
+                }
+            }
+
+            function randomizeGrid() {
+                const cells = document.querySelectorAll('.cell');
+                const randomIndices = [];
+
+                while (randomIndices.length < trapCount) {
+                    const index = Math.floor(Math.random() * 25);
+                    if (!randomIndices.includes(index)) {
+                        randomIndices.push(index);
+                    }
+                }
+
+                randomIndices.forEach(index => {
+                    cells[index].classList.add('hidden');
+                });
+
+                setTimeout(() => {
+                    randomIndices.forEach(index => {
+                        cells[index].classList.remove('hidden');
+                        cells[index].classList.add('cross');
+                    });
+
+                    setTimeout(() => {
+                        cells.forEach((cell, index) => {
+                            if (!randomIndices.includes(index)) {
+                                cell.classList.add('hidden');
+                            }
+                        });
+
+                        setTimeout(() => {
+                            cells.forEach((cell, index) => {
+                                if (!randomIndices.includes(index)) {
+                                    cell.classList.remove('hidden');
+                                    cell.classList.add('star');
+                                }
+                            });
+                        }, 500);
+                    }, 500);
+                }, 500);
+            }
+
+            function startTimer(duration, display) {
+                let timer = duration, minutes, seconds;
+                const endTime = Date.now() + duration * 1000;
+
+                const interval = setInterval(() => {
+                    const remainingTime = endTime - Date.now();
+                    if (remainingTime < 0) {
+                        clearInterval(interval);
+                        display.textContent = 'Узнать';
+                        button.disabled = false;
+                        localStorage.removeItem('endTime');
+                    } else {
+                        minutes = parseInt(remainingTime / 1000 / 60, 10);
+                        seconds = parseInt(remainingTime / 1000 % 60, 10);
+
+                        minutes = minutes < 10 ? "0" + minutes : minutes;
+                        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                        display.textContent = minutes + ":" + seconds;
+                    }
+                }, 1000);
+            }
+
+            button.addEventListener('click', () => {
+                button.disabled = true;
+                randomizeGrid();
+                const duration = 60; // 60 секунд
+                const endTime = Date.now() + duration * 1000;
+                localStorage.setItem('endTime', endTime);
+                startTimer(duration, button);
+            });
+
+            // Проверка таймера при загрузке страницы
+            const savedEndTime = localStorage.getItem('endTime');
+            if (savedEndTime) {
+                const remainingTime = (savedEndTime - Date.now()) / 1000;
+                if (remainingTime > 0) {
+                    button.disabled = true;
+                    startTimer(remainingTime, button);
+                }
+            }
+
+            createGrid();
+        });
+    </script>
 </body>
 </html>
+
+
+
+
+
+
 
