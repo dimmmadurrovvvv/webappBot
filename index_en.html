@@ -16,6 +16,15 @@
             margin: 0;
             font-family: Arial, sans-serif;
             overflow: hidden;
+            position: relative;
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
         }
 
         .welcome-container, .game-container {
@@ -183,6 +192,7 @@
     </style>
 </head>
 <body>
+    <img src="./chat_gpt_logo.svg" alt="ChatGPT Logo" class="logo">
     <div class="welcome-container" id="welcome-container">
         <img src="./raixan.png" alt="Raixan">
         <h1>Welcome to Liberty Empire!</h1>
@@ -190,6 +200,7 @@
         <button id="continue-button">Continue</button>
     </div>
     <div class="game-container" id="game-container">
+        <h1 style="font-family: 'Loos Wide', sans-serif; font-size: 2em; color: white; text-shadow: 2px 2px 2px black; margin: 20px 0;">Liberty Empire</h1>
         <div class="grid" id="grid">
             <!-- Squares will be added here using JavaScript -->
         </div>
