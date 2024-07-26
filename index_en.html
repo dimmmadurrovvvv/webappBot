@@ -159,6 +159,10 @@
         button:hover {
             background-color: #0056b3;
         }
+        .disabled {
+             pointer-events: none;
+             opacity: 0.5;
+        }
 
         .counter-container {
             display: flex;
@@ -307,8 +311,13 @@
                     const remainingTime = endTime - Date.now();
                     if (remainingTime < 0) {
                         clearInterval(interval);
-                        display.textContent = 'Find Out';
+                        display.textContent = 'Узнать';
                         button.disabled = false;
+                        decreaseButton.disabled = false;
+                        increaseButton.disabled = false;
+                        decreaseButton.classList.remove('disabled');
+                        increaseButton.classList.remove('disabled');
+                        resetGrid();
                         localStorage.removeItem('endTime');
                     } else {
                         minutes = parseInt(remainingTime / 1000 / 60, 10);
@@ -322,21 +331,38 @@
                 }, 1000);
             }
 
+            function resetGrid() {
+                const cells = document.querySelectorAll('.cell');
+                cells.forEach(cell => {
+                    cell.classList.remove('hidden', 'cross', 'star');
+                });
+                trapCount = 1;
+                trapCountElement.textContent = trapCount;
+            }
+
             button.addEventListener('click', () => {
                 button.disabled = true;
+                decreaseButton.disabled = true;
+                increaseButton.disabled = true;
+                decreaseButton.classList.add('disabled');
+                increaseButton.classList.add('disabled');
                 randomizeGrid();
-                const duration = 60; // 60 seconds
+                const duration = 60; // 60 секунд
                 const endTime = Date.now() + duration * 1000;
                 localStorage.setItem('endTime', endTime);
                 startTimer(duration, button);
             });
 
-            // Check timer on page load
+            // Проверка таймера при загрузке страницы
             const savedEndTime = localStorage.getItem('endTime');
             if (savedEndTime) {
                 const remainingTime = (savedEndTime - Date.now()) / 1000;
                 if (remainingTime > 0) {
                     button.disabled = true;
+                    decreaseButton.disabled = true;
+                    increaseButton.disabled = true;
+                    decreaseButton.classList.add('disabled');
+                    increaseButton.classList.add('disabled');
                     startTimer(remainingTime, button);
                 }
             }
