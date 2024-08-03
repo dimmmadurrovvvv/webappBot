@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebApp Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Loos+Wide&family=Poppins:wght@400;600&display=swap');
+        
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #070B1F;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .welcome-container, .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            max-width: 90%;
+            max-height: 90%;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .welcome-container {
+            z-index: 10;
+            animation: fadeIn 1s forwards;
+        }
+
+
+        .game-container {
+            display: flex;
+            opacity: 0;
+            z-index: 0;
+            transition: opacity 1s ease;
+        }
+
+        .game-container.show {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes parallax {
+            0% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(10px);
+            }
+        }
+
+        .welcome-container img {
+            max-width: 60%;
+            height: 34%;
+            margin-bottom: 20px;
+            animation: parallax 2s infinite alternate ease-in-out;
+        }
+
+        .welcome-container h1 {
+            font-family: 'Loos Wide', sans-serif;
+            font-size: 2em;
+            color: white;
+            text-shadow: 2px 2px 2px black;
+            margin: 20px 0 10px 0;
+        }
+
+        .welcome-container p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 12px;
+            background-color: #0D1028;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+        }
+
+        .grid div {
+            width: 60px;
+            height: 60px;
+            background-image: url('./Rectangle.svg');
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .hidden {
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        .cross {
+            background-image: url('./cross.svg') !important;
+            background-size: cover;
+        }
+
+        .star {
+            background-image: url('./star.svg') !important;
+            background-size: cover;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 18px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        .disabled {
+             pointer-events: none;
+             opacity: 0.5;
+        }
+
+
+        .counter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 70%;
+            height: 60px;
+            background-color: #141B2E;
+            border-radius: 15px;
+            padding: 0 8px;
+            margin-bottom: 20px;
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .counter {
+            display: flex;
+            align-items: center;
+            background-color: #090F1D;
+            border-radius: 15px;
+            padding: 8px;
+        }
+
+        .counter span {
+            margin: 0 10px;
+            font-size: 18px;
+        }
+
+        .counter img {
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container" id="welcome-container">
+        <img src="./raixan.png" alt="Raixan">
+        <h1>Добро пожаловать в Liberty Empire!</h1>
+        <p> Вы успешно прошли проверку и подключили аккаунт к нашей системе</p>
+        <button id="continue-button">Продолжить</button>
+    </div>
+    <div class="game-container" id="game-container">
+        <h1 style="font-family: 'Loos Wide', sans-serif; font-size: 2em; color: white; text-shadow: 2px 2px 2px black; margin: 20px 0;">Liberty Empire</h1>
+        <div class="grid" id="grid">
+            <!-- Квадраты будут добавлены здесь с помощью JavaScript -->
+        </div>
+        <div class="counter-container">
+            Кол-во ловушек
+            <div class="counter">
+                <img id="decrease-button" src="./left-arrow.svg" alt="Decrease">
+                <span id="trap-count">1</span>
+                <img id="increase-button" src="./right-arrow.svg" alt="Increase">
+            </div>
+        </div>
+        <button id="uznat-button">Узнать</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const welcomeContainer = document.getElementById('welcome-container');
+            const gameContainer = document.getElementById('game-container');
+            const continueButton = document.getElementById('continue-button');
+            const grid = document.getElementById('grid');
+            const button = document.getElementById('uznat-button');
+            const trapCountElement = document.getElementById('trap-count');
+            const decreaseButton = document.getElementById('decrease-button');
+            const increaseButton = document.getElementById('increase-button');
+            let trapCount = 1;
+            const trapOptions = [1, 3, 5, 7];
+
+            continueButton.addEventListener('click', () => {
+                welcomeContainer.style.display = 'none';
+                gameContainer.classList.add('show');
+            });
+
+            decreaseButton.addEventListener('click', () => {
+                const currentIndex = trapOptions.indexOf(trapCount);
+                if (currentIndex > 0) {
+                    trapCount = trapOptions[currentIndex - 1];
+                    trapCountElement.textContent = trapCount;
+                }
+            });
+
+            increaseButton.addEventListener('click', () => {
+                const currentIndex = trapOptions.indexOf(trapCount);
+                if (currentIndex < trapOptions.length - 1) {
+                    trapCount = trapOptions[currentIndex + 1];
+                    trapCountElement.textContent = trapCount;
+                }
+            });
+
+            function createGrid() {
+                for (let i = 0; i < 25; i++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    grid.appendChild(cell);
+                }
+            }
+
+            function randomizeGrid() {
+                const cells = document.querySelectorAll('.cell');
+                const randomIndices = [];
+
+                while (randomIndices.length < trapCount) {
+                    const index = Math.floor(Math.random() * 25);
+                    if (!randomIndices.includes(index)) {
+                        randomIndices.push(index);
+                    }
+                }
+
+                randomIndices.forEach(index => {
+                    cells[index].classList.add('hidden');
+                });
+
+                setTimeout(() => {
+                    randomIndices.forEach(index => {
+                        cells[index].classList.remove('hidden');
+                        cells[index].classList.add('cross');
+                    });
+
+                    setTimeout(() => {
+                        cells.forEach((cell, index) => {
+                            if (!randomIndices.includes(index)) {
+                                cell.classList.add('hidden');
+                            }
+                        });
+
+                        setTimeout(() => {
+                            cells.forEach((cell, index) => {
+                                if (!randomIndices.includes(index)) {
+                                    cell.classList.remove('hidden');
+                                    cell.classList.add('star');
+                                }
+                            });
+                        }, 500);
+                    }, 500);
+                }, 500);
+            }
+
+            function startTimer(duration, display) {
+                let timer = duration, minutes, seconds;
+                const endTime = Date.now() + duration * 1000;
+
+                const interval = setInterval(() => {
+                    const remainingTime = endTime - Date.now();
+                    if (remainingTime < 0) {
+                        clearInterval(interval);
+                        display.textContent = 'Узнать';
+                        button.disabled = false;
+                        decreaseButton.disabled = false;
+                        increaseButton.disabled = false;
+                        decreaseButton.classList.remove('disabled');
+                        increaseButton.classList.remove('disabled');
+                        resetGrid();
+                        localStorage.removeItem('endTime');
+                    } else {
+                        minutes = parseInt(remainingTime / 1000 / 60, 10);
+                        seconds = parseInt(remainingTime / 1000 % 60, 10);
+
+                        minutes = minutes < 10 ? "0" + minutes : minutes;
+                        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                        display.textContent = minutes + ":" + seconds;
+                    }
+                }, 1000);
+            }
+
+            function resetGrid() {
+                const cells = document.querySelectorAll('.cell');
+                cells.forEach(cell => {
+                    cell.classList.remove('hidden', 'cross', 'star');
+                });
+                trapCount = 1;
+                trapCountElement.textContent = trapCount;
+            }
+
+            button.addEventListener('click', () => {
+                button.disabled = true;
+                decreaseButton.disabled = true;
+                increaseButton.disabled = true;
+                decreaseButton.classList.add('disabled');
+                increaseButton.classList.add('disabled');
+                randomizeGrid();
+                const duration = 60; // 60 секунд
+                const endTime = Date.now() + duration * 1000;
+                localStorage.setItem('endTime', endTime);
+                startTimer(duration, button);
+            });
+
+            // Проверка таймера при загрузке страницы
+            const savedEndTime = localStorage.getItem('endTime');
+            if (savedEndTime) {
+                const remainingTime = (savedEndTime - Date.now()) / 1000;
+                if (remainingTime > 0) {
+                    button.disabled = true;
+                    decreaseButton.disabled = true;
+                    increaseButton.disabled = true;
+                    decreaseButton.classList.add('disabled');
+                    increaseButton.classList.add('disabled');
+                    startTimer(remainingTime, button);
+                }
+            }
+
+            createGrid();
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+

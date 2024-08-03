@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liberty Empire Game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Halvar+Breitschrift:wght@400;600&family=Poppins:wght@400;600&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('bgfirstscreen.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 75px;
+            height: 35px;
+        }
+
+        .game-logo {
+            width: 75px;
+            height: 35px;
+        }
+
+        .grid-container {
+            background-color: #0A0F1D;
+            border: 1px solid;
+            border-image: linear-gradient(1A1F2D, 5F889E) 1;
+            box-shadow: 0 4px 8px rgba(157, 219, 232, 0.2);
+            padding: 12px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(5, 51px);
+            grid-gap: 12px;
+            justify-content: center;
+        }
+
+        .cell {
+            width: 51px;
+            height: 51px;
+            background-image: url('Rectangle.svg');
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.5s, opacity 0.5s;
+        }
+
+        .hidden {
+            transform: scale(0);
+            opacity: 0;
+        }
+
+        .cross {
+            background-image: url('cross.svg');
+            background-size: cover;
+        }
+
+        .star {
+            background-image: url('star.svg');
+            background-size: cover;
+        }
+
+        .counter-container {
+            background-color: #151B2E;
+            width: 100%;
+            padding: 14px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            box-sizing: border-box;
+        }
+
+        .counter {
+            background-color: #0A0F1E;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 62px;
+            border-radius: 15px;
+            width: 100%;
+            padding: 0 12px;
+            box-sizing: border-box;
+        }
+
+        .counter span {
+            font-family: 'Halvar Breitschrift', sans-serif;
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .counter small {
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            color: #97A3CB;
+        }
+
+        .arrow {
+            padding: 12px;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+        }
+
+        .button {
+            width: 100%;
+            height: 55px;
+            background: linear-gradient(108deg, #108AE6 0%, #0757C5 100%);
+            border-radius: 10px;
+            color: white;
+            font-family: 'Halvar Breitschrift', sans-serif;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            margin-top: 14px;
+        }
+
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="openai.svg" class="logo" alt="OpenAI Logo">
+            <img src="1winlogo.svg" class="game-logo" alt="1win Logo">
+        </div>
+        <div class="grid-container" id="grid-container">
+            <!-- Grid cells will be populated here by JavaScript -->
+        </div>
+        <div class="counter-container">
+            <div class="counter">
+                <img src="left-arrow.svg" class="arrow" id="decrease-button" alt="Decrease">
+                <div>
+                    <span id="trap-count">1</span>
+                    <br>
+                    <small>ловушек</small>
+                </div>
+                <img src="right-arrow.svg" class="arrow" id="increase-button" alt="Increase">
+            </div>
+            <button class="button" id="get-signal-button">Получить сигнал</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gridContainer = document.getElementById('grid-container');
+            const getSignalButton = document.getElementById('get-signal-button');
+            const trapCountElement = document.getElementById('trap-count');
+            const decreaseButton = document.getElementById('decrease-button');
+            const increaseButton = document.getElementById('increase-button');
+
+            let trapCount = 1;
+            const trapOptions = [1, 3, 5, 7];
+
+            decreaseButton.addEventListener('click', () => {
+                const currentIndex = trapOptions.indexOf(trapCount);
+                if (currentIndex > 0) {
+                    trapCount = trapOptions[currentIndex - 1];
+                    trapCountElement.textContent = trapCount;
+                }
+            });
+
+            increaseButton.addEventListener('click', () => {
+                const currentIndex = trapOptions.indexOf(trapCount);
+                if (currentIndex < trapOptions.length - 1) {
+                    trapCount = trapOptions[currentIndex + 1];
+                    trapCountElement.textContent = trapCount;
+                }
+            });
+
+            function createGrid() {
+                for (let i = 0; i < 25; i++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    gridContainer.appendChild(cell);
+                }
+            }
+
+            function randomizeGrid() {
+                const cells = document.querySelectorAll('.cell');
+                const randomIndices = [];
+
+                while (randomIndices.length < trapCount) {
+                    const index = Math.floor(Math.random() * 25);
+                    if (!randomIndices.includes(index)) {
+                        randomIndices.push(index);
+                    }
+                }
+
+                randomIndices.forEach(index => {
+                    cells[index].classList.add('hidden');
+                });
+
+                setTimeout(() => {
+                    randomIndices.forEach(index => {
+                        cells[index].classList.remove('hidden');
+                        cells[index].classList.add('cross');
+                    });
+
+                    setTimeout(() => {
+                        cells.forEach((cell, index) => {
+                            if (!randomIndices.includes(index)) {
+                                cell.classList.add('hidden');
+                            }
+                        });
+
+                        setTimeout(() => {
+                            cells.forEach((cell, index) => {
+                                if (!randomIndices.includes(index)) {
+                                    cell.classList.remove('hidden');
+                                    cell.classList.add('star');
+                                }
+                            });
+                        }, 500);
+                    }, 500);
+                }, 500);
+            }
+
+            function startTimer(duration, display) {
+                let timer = duration, minutes, seconds;
+                const endTime = Date.now() + duration * 1000;
+
+                const interval = setInterval(() => {
+                    const remainingTime = endTime - Date.now();
+                    if (remainingTime < 0) {
+                        clearInterval(interval);
+                        display.textContent = 'Получить сигнал';
+                        getSignalButton.disabled = false;
+                        decreaseButton.disabled = false;
+                        increaseButton.disabled = false;
+                        decreaseButton.classList.remove('disabled');
+                        increaseButton.classList.remove('disabled');
+                        resetGrid();
+                        localStorage.removeItem('endTime');
+                    } else {
+                        minutes = parseInt(remainingTime / 1000 / 60, 10);
+                        seconds = parseInt(remainingTime / 1000 % 60, 10);
+
+                        minutes = minutes < 10 ? "0" + minutes : minutes;
+                        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                        display.textContent = minutes + ":" + seconds;
+                    }
+                }, 1000);
+            }
+
+            function resetGrid() {
+                const cells = document.querySelectorAll('.cell');
+                cells.forEach(cell => {
+                    cell.classList.remove('hidden', 'cross', 'star');
+                });
+                trapCount = 1;
+                trapCountElement.textContent = trapCount;
+            }
+
+            getSignalButton.addEventListener('click', () => {
+                getSignalButton.disabled = true;
+                decreaseButton.disabled = true;
+                increaseButton.disabled = true;
+                decreaseButton.classList.add('disabled');
+                increaseButton.classList.add('disabled');
+                randomizeGrid();
+                const duration = 60; // 60 секунд
+                const endTime = Date.now() + duration * 1000;
+                localStorage.setItem('endTime', endTime);
+                startTimer(duration, getSignalButton);
+            });
+
+            // Проверка таймера при загрузке страницы
+            const savedEndTime = localStorage.getItem('endTime');
+            if (savedEndTime) {
+                const remainingTime = (savedEndTime - Date.now()) / 1000;
+                if (remainingTime > 0) {
+                    getSignalButton.disabled = true;
+                    decreaseButton.disabled = true;
+                    increaseButton.disabled = true;
+                    decreaseButton.classList.add('disabled');
+                    increaseButton.classList.add('disabled');
+                    startTimer(remainingTime, getSignalButton);
+                }
+            }
+
+            createGrid();
+        });
+    </script>
+</body>
+</html>
+
+
+
