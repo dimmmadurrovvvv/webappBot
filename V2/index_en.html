@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liberty Empire Welcome</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Halvar+Breitschrift:wght@400;600&family=Poppins:wght@400;600&display=swap');
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('bgfirstscreen.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            position: absolute;
+            top: 20px;
+            width: 62px;
+            height: 29px;
+        }
+
+        .game-logo {
+            width: 145px;
+            height: 145px;
+            margin-bottom: 26px;
+            animation: parallax 2s infinite alternate ease-in-out;
+        }
+
+        .title {
+            font-family: 'Halvar Breitschrift', sans-serif;
+            font-size: 24px;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: white;
+            margin-bottom: 26px;
+        }
+
+        .button {
+            width: 335px;
+            height: 55px;
+            background: linear-gradient(108deg, #108AE6 0%, #0757C5 100%);
+            border-radius: 10px;
+            color: white;
+            font-family: 'Halvar Breitschrift', sans-serif;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+        }
+
+        @keyframes parallax {
+            0% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="1winlogo.svg" class="logo" alt="1win Logo">
+        <img src="minesfirstscreen.svg" class="game-logo" alt="Mines Game Logo">
+        <div class="title">Welcome<br>to Liberty Empire!</div>
+        <div class="subtitle">You have successfully passed verification<br>and connected your account to our system</div>
+        <button class="button" onclick="openGamePage()">Continue</button>
+    </div>
+    <script>
+        function openGamePage() {
+            window.location.href = "game_en.html";
+        }
+    </script>
+</body>
+</html>
