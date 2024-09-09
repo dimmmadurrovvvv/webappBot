@@ -213,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const cell = document.createElement('div');
             cell.classList.add('cell');
 
+            // Устанавливаем начальное изображение для ячейки
             const randomImage = rectangleImages[Math.floor(Math.random() * rectangleImages.length)];
             cell.style.backgroundImage = `url('${randomImage}')`;
 
@@ -224,33 +225,41 @@ document.addEventListener('DOMContentLoaded', () => {
         const cells = document.querySelectorAll('.cell');
         const totalCells = 25;
 
+        // Сброс всех классов и изображений
         cells.forEach(cell => {
             cell.classList.remove('hidden', 'cross', 'star');
+            cell.style.backgroundImage = '';
         });
 
+        const crossPositions = [0, 8, 13]; // Правильные позиции для крестов (1, 9, 14)
+
         if (trapCount === 3) {
-            const crossPositions = [0, 13, 18];
+            // Назначаем классы крестиков и явным образом меняем background-image
             crossPositions.forEach(index => {
+                cells[index].style.transition = 'transform 0.5s, opacity 0.5s';
+                cells[index].style.transform = 'scale(0)'; // Уменьшаем квадрат
                 setTimeout(() => {
-                    cells[index].classList.add('hidden');
-                }, 500);
-                setTimeout(() => {
-                    cells[index].classList.remove('hidden');
                     cells[index].classList.add('cross');
-                }, 1000);
+                    cells[index].style.backgroundImage = 'url("cross.svg")';
+                    cells[index].style.transform = 'scale(1)'; // Возвращаем квадрат
+                    cells[index].style.opacity = '1'; // Показываем снова
+                }, 500); // Появление через 500 мс
             });
 
+            // Остальные клетки - звезды
             cells.forEach((cell, index) => {
                 if (!crossPositions.includes(index)) {
+                    cell.style.transition = 'transform 0.5s, opacity 0.5s';
+                    cell.style.transform = 'scale(0)'; // Уменьшаем квадрат
                     setTimeout(() => {
-                        cell.classList.add('hidden');
-                    }, 500);
-                    setTimeout(() => {
-                        cell.classList.remove('hidden');
                         cell.classList.add('star');
-                    }, 1000);
+                        cell.style.backgroundImage = 'url("star.svg")';
+                        cell.style.transform = 'scale(1)'; // Возвращаем квадрат
+                        cell.style.opacity = '1'; // Показываем снова
+                    }, 500); // Появление через 500 мс
                 }
             });
+
         } else {
             const randomIndices = [];
             while (randomIndices.length < trapCount) {
@@ -260,25 +269,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            // Назначаем классы крестиков и явным образом меняем background-image
             randomIndices.forEach(index => {
+                cells[index].style.transition = 'transform 0.5s, opacity 0.5s';
+                cells[index].style.transform = 'scale(0)'; // Уменьшаем квадрат
                 setTimeout(() => {
-                    cells[index].classList.add('hidden');
-                }, 500);
-                setTimeout(() => {
-                    cells[index].classList.remove('hidden');
                     cells[index].classList.add('cross');
-                }, 1000);
+                    cells[index].style.backgroundImage = 'url("cross.svg")';
+                    cells[index].style.transform = 'scale(1)'; // Возвращаем квадрат
+                    cells[index].style.opacity = '1'; // Показываем снова
+                }, 500); // Появление через 500 мс
             });
 
+            // Остальные клетки - звезды
             cells.forEach((cell, index) => {
                 if (!randomIndices.includes(index)) {
+                    cell.style.transition = 'transform 0.5s, opacity 0.5s';
+                    cell.style.transform = 'scale(0)'; // Уменьшаем квадрат
                     setTimeout(() => {
-                        cell.classList.add('hidden');
-                    }, 500);
-                    setTimeout(() => {
-                        cell.classList.remove('hidden');
                         cell.classList.add('star');
-                    }, 1000);
+                        cell.style.backgroundImage = 'url("star.svg")';
+                        cell.style.transform = 'scale(1)'; // Возвращаем квадрат
+                        cell.style.opacity = '1'; // Показываем снова
+                    }, 500); // Появление через 500 мс
                 }
             });
         }
@@ -316,6 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const cells = document.querySelectorAll('.cell');
         cells.forEach(cell => {
             cell.classList.remove('hidden', 'cross', 'star');
+            cell.style.backgroundImage = '';  // Сбрасываем изображение
         });
         trapCount = 1;
         trapCountElement.textContent = trapCount;
@@ -328,7 +342,9 @@ document.addEventListener('DOMContentLoaded', () => {
         decreaseButton.classList.add('disabled');
         increaseButton.classList.add('disabled');
         randomizeGrid();
-        const duration = 60; 
+
+        // Меняем длительность таймера на 5 секунд для тестирования
+        const duration = 5;  // Можно поменять на любое другое время
         const endTime = Date.now() + duration * 1000;
         localStorage.setItem('endTime', endTime);
         startTimer(duration, getSignalButton);
