@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
         randomizeGrid();
 
         // Меняем длительность таймера на 5 секунд для тестирования
-        const duration = 5;  // Можно поменять на любое другое время
+        const duration = 60;  // Можно поменять на любое другое время
         const endTime = Date.now() + duration * 1000;
         localStorage.setItem('endTime', endTime);
         startTimer(duration, getSignalButton);
