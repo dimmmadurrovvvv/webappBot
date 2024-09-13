@@ -231,70 +231,39 @@ document.addEventListener('DOMContentLoaded', () => {
             cell.style.backgroundImage = '';
         });
 
-        const crossPositions = [5, 10, 18];
-
-        if (trapCount === 3) {
-            // Назначаем классы крестиков и явным образом меняем background-image
-            crossPositions.forEach(index => {
-                cells[index].style.transition = 'transform 0.5s, opacity 0.5s';
-                cells[index].style.transform = 'scale(0)'; // Уменьшаем квадрат
-                setTimeout(() => {
-                    cells[index].classList.add('cross');
-                    cells[index].style.backgroundImage = 'url("cross.svg")';
-                    cells[index].style.transform = 'scale(1)'; // Возвращаем квадрат
-                    cells[index].style.opacity = '1'; // Показываем снова
-                }, 500); // Появление через 500 мс
-            });
-
-            // Остальные клетки - звезды
-            cells.forEach((cell, index) => {
-                if (!crossPositions.includes(index)) {
-                    cell.style.transition = 'transform 0.5s, opacity 0.5s';
-                    cell.style.transform = 'scale(0)'; // Уменьшаем квадрат
-                    setTimeout(() => {
-                        cell.classList.add('star');
-                        cell.style.backgroundImage = 'url("star.svg")';
-                        cell.style.transform = 'scale(1)'; // Возвращаем квадрат
-                        cell.style.opacity = '1'; // Показываем снова
-                    }, 500); // Появление через 500 мс
-                }
-            });
-
-        } else {
-            const randomIndices = [];
-            while (randomIndices.length < trapCount) {
-                const randomIndex = Math.floor(Math.random() * totalCells);
-                if (!randomIndices.includes(randomIndex)) {
-                    randomIndices.push(randomIndex);
-                }
+        const randomIndices = [];
+        while (randomIndices.length < trapCount) {
+            const randomIndex = Math.floor(Math.random() * totalCells);
+            if (!randomIndices.includes(randomIndex)) {
+                randomIndices.push(randomIndex);
             }
-
-            // Назначаем классы крестиков и явным образом меняем background-image
-            randomIndices.forEach(index => {
-                cells[index].style.transition = 'transform 0.5s, opacity 0.5s';
-                cells[index].style.transform = 'scale(0)'; // Уменьшаем квадрат
-                setTimeout(() => {
-                    cells[index].classList.add('cross');
-                    cells[index].style.backgroundImage = 'url("cross.svg")';
-                    cells[index].style.transform = 'scale(1)'; // Возвращаем квадрат
-                    cells[index].style.opacity = '1'; // Показываем снова
-                }, 500); // Появление через 500 мс
-            });
-
-            // Остальные клетки - звезды
-            cells.forEach((cell, index) => {
-                if (!randomIndices.includes(index)) {
-                    cell.style.transition = 'transform 0.5s, opacity 0.5s';
-                    cell.style.transform = 'scale(0)'; // Уменьшаем квадрат
-                    setTimeout(() => {
-                        cell.classList.add('star');
-                        cell.style.backgroundImage = 'url("star.svg")';
-                        cell.style.transform = 'scale(1)'; // Возвращаем квадрат
-                        cell.style.opacity = '1'; // Показываем снова
-                    }, 500); // Появление через 500 мс
-                }
-            });
         }
+
+        // Назначаем классы крестиков и явным образом меняем background-image
+        randomIndices.forEach(index => {
+            cells[index].style.transition = 'transform 0.5s, opacity 0.5s';
+            cells[index].style.transform = 'scale(0)'; // Уменьшаем квадрат
+            setTimeout(() => {
+                cells[index].classList.add('cross');
+                cells[index].style.backgroundImage = 'url("cross.svg")';
+                cells[index].style.transform = 'scale(1)'; // Возвращаем квадрат
+                cells[index].style.opacity = '1'; // Показываем снова
+            }, 500); // Появление через 500 мс
+        });
+
+        // Остальные клетки - звезды
+        cells.forEach((cell, index) => {
+            if (!randomIndices.includes(index)) {
+                cell.style.transition = 'transform 0.5s, opacity 0.5s';
+                cell.style.transform = 'scale(0)'; // Уменьшаем квадрат
+                setTimeout(() => {
+                    cell.classList.add('star');
+                    cell.style.backgroundImage = 'url("star.svg")';
+                    cell.style.transform = 'scale(1)'; // Возвращаем квадрат
+                    cell.style.opacity = '1'; // Показываем снова
+                }, 500); // Появление через 500 мс
+            }
+        });
     }
 
     function startTimer(duration, display) {
